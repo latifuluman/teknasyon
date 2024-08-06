@@ -51,7 +51,10 @@ Servisleri Test Etme
 *Transfer loglarının MongoDB de loglanması*
 
 
-
+### For testing you can use the following command
+```
+go test ./...
+```
 
 # Mikroservis Mimari Tasarımı
 
