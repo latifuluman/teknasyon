@@ -13,7 +13,7 @@ func Test_routes_exist(t *testing.T) {
 	testRoutes := testApp.routes()
 	chiRoutes := testRoutes.(chi.Router)
 
-	routes := []string{"/v1/accounts", "/v1/accounts/transfer/money"}
+	routes := []string{"/v1/accounts", "/v1/accounts/transfer/money", "/v1/accounts/{accountID}"}
 
 	for _, route := range routes {
 		routeExists(t, chiRoutes, route)

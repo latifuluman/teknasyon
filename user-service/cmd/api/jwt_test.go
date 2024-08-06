@@ -30,7 +30,7 @@ func TestVerifyToken(t *testing.T) {
 		t.Fatalf("expected session, got nil")
 	}
 	if session.UserID != userID {
-		t.Fatalf("expected userID %d, got %d", userID, session.UserID)
+		t.Fatalf("expected userID %s, got %s", userID, session.UserID)
 	}
 
 	// Test invalid token

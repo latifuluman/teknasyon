@@ -13,6 +13,7 @@ import (
 
 var client *mongo.Client
 
+// New initializes a new instance of Models with a MongoDB client.
 func New(mongo *mongo.Client) Models {
 	client = mongo
 
@@ -21,10 +22,12 @@ func New(mongo *mongo.Client) Models {
 	}
 }
 
+// Models is a struct containing various model types.
 type Models struct {
 	LogEntry LogEntry
 }
 
+// LogEntry represents a log entry in the database.
 type LogEntry struct {
 	ID        string    `bson:"_id,omitempty" json:"id,omitempty"`
 	Name      string    `bson:"name" json:"name"`
@@ -33,12 +36,13 @@ type LogEntry struct {
 	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
 }
 
+// Insert adds a new log entry to the database.
 func (l *LogEntry) Insert(entry LogEntry) error {
 	collection := client.Database("logs").Collection("logs")
 
 	_, err := collection.InsertOne(context.TODO(), LogEntry{
-		Name: entry.Name,
-		Data: entry.Data,
+		Name:      entry.Name,
+		Data:      entry.Data,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	})
@@ -50,6 +54,7 @@ func (l *LogEntry) Insert(entry LogEntry) error {
 	return nil
 }
 
+// All retrieves all log entries from the database.
 func (l *LogEntry) All() ([]*LogEntry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
@@ -83,6 +88,7 @@ func (l *LogEntry) All() ([]*LogEntry, error) {
 	return logs, nil
 }
 
+// GetOne retrieves a single log entry from the database by its ID.
 func (l *LogEntry) GetOne(id string) (*LogEntry, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
@@ -103,6 +109,7 @@ func (l *LogEntry) GetOne(id string) (*LogEntry, error) {
 	return &entry, nil
 }
 
+// DropCollection drops the logs collection from the database.
 func (l *LogEntry) DropCollection() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
@@ -116,6 +123,7 @@ func (l *LogEntry) DropCollection() error {
 	return nil
 }
 
+// Update modifies an existing log entry in the database.
 func (l *LogEntry) Update() (*mongo.UpdateResult, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()

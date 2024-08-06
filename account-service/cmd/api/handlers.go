@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"account-service/data"
@@ -52,6 +51,14 @@ func (app *Config) TransferMoney(w http.ResponseWriter, r *http.Request) {
 		app.errorJSON(w, errAuthFailed, http.StatusUnauthorized)
 		return
 	}
+
+	//Start a new transaction
+	tx, err := app.Repo.Begin()
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	defer tx.Rollback() // Ensure rollback in case of failure
 
 	// Retrieve the sender account from the repository.
 	senderAccount, err := app.Repo.GetAccountByID(requestPayload.Sender)
@@ -114,6 +121,13 @@ func (app *Config) TransferMoney(w http.ResponseWriter, r *http.Request) {
 
 	// Update the sender's account in the repository.
 	err = app.Repo.UpdateAccount(senderAccount)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	// Commit the transaction
+	err = tx.Commit()
 	if err != nil {
 		app.errorJSON(w, err)
 		return
@@ -184,21 +198,13 @@ func (app *Config) CreateAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Start a new transaction
-	tx, err := app.Repo.Begin()
-	if err != nil {
-		app.errorJSON(w, err)
-		return
-	}
-	defer tx.Rollback() // Ensure rollback in case of failure
-
 	// Read and parse the JSON payload from the request.
-	err = app.readJSON(w, r, &requestPayload)
+	err := app.readJSON(w, r, &requestPayload)
 	if err != nil {
 		app.errorJSON(w, err, http.StatusBadRequest)
 		return
 	}
-	log.Printf("the init balance is %+v \n ", requestPayload.InitialBalance)
+
 	// Create a new account instance with the provided details.
 	account := data.Account{
 		UserID:      session.UserID,
@@ -209,13 +215,6 @@ func (app *Config) CreateAccount(w http.ResponseWriter, r *http.Request) {
 
 	// Insert the new account into the repository and get the account ID.
 	accountID, err := app.Repo.InsertAccount(account)
-	if err != nil {
-		app.errorJSON(w, err)
-		return
-	}
-
-	// Commit the transaction
-	err = tx.Commit()
 	if err != nil {
 		app.errorJSON(w, err)
 		return

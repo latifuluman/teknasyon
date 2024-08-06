@@ -28,7 +28,7 @@ func (app *Config) routes() http.Handler {
 		MaxAge:           300,
 	}))
 
-	mux.Use(app.Authorization(), middleware.Heartbeat("/ping"))
+	mux.Use(app.Authorization(VerifyToken), middleware.Heartbeat("/ping"))
 
 	mux.Post("/v1/accounts/transfer/money", app.TransferMoney)
 	mux.Post("/v1/accounts", app.CreateAccount)
@@ -37,8 +37,11 @@ func (app *Config) routes() http.Handler {
 	return mux
 }
 
+// VerifyTokenFunc is a function type for verifying tokens
+type VerifyTokenFunc func(token string) (*Session, error)
+
 // Authorization checks the token and decides that is authorized or not
-func (app *Config) Authorization() func(http.Handler) http.Handler {
+func (app *Config) Authorization(verifyToken VerifyTokenFunc) func(http.Handler) http.Handler {
 	f := func(h http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
 			var (
@@ -56,16 +59,14 @@ func (app *Config) Authorization() func(http.Handler) http.Handler {
 
 			splitToken = strings.Split(authToken, "Bearer ")
 			if len(splitToken) == 2 {
-
 				token = splitToken[1]
 			} else {
-
 				app.errorJSON(w, errors.New("invalid_token"), http.StatusUnauthorized)
 				return
 			}
-			session, err := VerifyToken(token)
-			if err != nil {
 
+			session, err := verifyToken(token)
+			if err != nil {
 				app.errorJSON(w, err, http.StatusUnauthorized)
 				return
 			}
