@@ -44,8 +44,12 @@ Servisleri Test Etme
 ```
 
 ![Mailhog Mails](./mailhog.png)
+*Mailhog üzerinden kullanıcıya mail gönderme*
+
 
 ![Mongo DB Logs](./mongo.png)
+*Transfer loglarının MongoDB de loglanması*
+
 
 
 
