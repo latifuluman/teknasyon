@@ -43,11 +43,11 @@ Servisleri Test Etme
 
 ```
 
-![Mailhog Mails](./mailhog.png)
+![Mailhog Mails](./assets/images/mailhog.png)
 *Mailhog üzerinden kullanıcıya mail gönderme*
 
 
-![Mongo DB Logs](./mongo.png)
+![Mongo DB Logs](./assets/images/mongo.png)
 *Transfer loglarının MongoDB de loglanması*
 
 
@@ -73,7 +73,7 @@ go test ./...
 - **nginx**
 
 ## Mimarinin Genel Akışı
-![Mikroservis Mimari Tasarımı](./system_design.png)
+![Mikroservis Mimari Tasarımı](./assets/images/system_design.png)
 
 1. **Client**'tan gelen istekler **NGINX**'e yönlendirilir.
 2. **NGINX**, gelen istekleri uygun olan servise yönlendirir ve load balancing işlemini gerçekleştirir.
