@@ -43,7 +43,7 @@ Servisleri Test Etme
 
 ```
 
-![Mailhog Mails](./mail.png)
+![Mailhog Mails](./mailhog.png)
 
 ![Mongo DB Logs](./mongo.png)
 
