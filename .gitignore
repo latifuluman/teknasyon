@@ -1,0 +1,59 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Output of the build process
+bin/
+build/
+
+# Vendor directory (for Go modules)
+vendor/
+
+# Go workspace file
+go.work
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Log files
+*.log
+
+# Environment variable files
+.env
+
+# Dependency directories
+node_modules/
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+
+# Coverage and test results
+*.out
+coverage/
+test-results/
+
+# Local configuration files
+*.local
+
+# Ignore any generated files
+gen/
+
+# Ignore db volumes
+project/db-data/
+
+account-service/accountApp
+listener-service/listenerApp
+logger-service/loggerServiceApp
+mail-service/mailerApp
+user-service/userApp
