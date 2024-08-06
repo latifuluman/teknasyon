@@ -51,7 +51,7 @@ Servisleri Test Etme
 *Transfer loglarının MongoDB de loglanması*
 
 
-### For testing you can use the following command
+### Test için aşağıdaki komut kullanılabilir
 ```
 go test ./...
 ```
