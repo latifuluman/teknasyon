@@ -43,6 +43,11 @@ Servisleri Test Etme
 
 ```
 
+![Mailhog Mails](./mail.png)
+
+![Mongo DB Logs](./mongo.png)
+
+
 
 # Mikroservis Mimari Tasarımı
 
